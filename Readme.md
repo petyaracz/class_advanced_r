@@ -30,9 +30,7 @@
 		- Datacamp::Introduction_to_Regression::Chapter_2
 3. diagnosztika
 	- elmélet:
-		- alul- és túlillesztés
 		- r^2 és RSE
-		- szabadságfok
 		- AIC és BIC
 		- linearitás, homoszkedaszticitás, invariancia, a hibák függetlensége
 		- Ascombe's quartet
@@ -52,6 +50,8 @@
 		- Datacamp::Introduction_to_Regression::Chapter_4
 5. többszörös lineáris regresszió: numer + faktor
 	- elmélet:
+ 		- alul- és túlillesztés
+   		- szabadságfok 	
 		- több metszéspont
 	- gyakorlat:
 		- `1 + a`, `0 + a`
