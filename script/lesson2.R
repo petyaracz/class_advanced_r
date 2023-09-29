@@ -56,6 +56,7 @@ tidy(lm3, conf.int = T)
 plotLM(d4,height_father,limbo_son)
 with(d4, cor(height_father,limbo_son))
 lm4 = lm(limbo_son ~ height_father, data = d4)
+summary(lm4)
 tidy(lm4, conf.int = T)
 
 # d5: outliers
@@ -65,7 +66,7 @@ lm5 = lm(height_son ~ height_father, data = d5)
 tidy(lm5, conf.int = T)
 
 # and now we predict
-
+str(d1)
 predict(lm1)
 predict(lm1, tibble(height_father = 195))
 
@@ -73,7 +74,7 @@ predict(lm1, tibble(height_father = 195))
 predict(lm2)
 predict(lm2, tibble(height_father_c = 195))
 
-
+# sampling
 # confint!
 # Confidence intervals tell you about how well you have determined the mean. Assume that the data really are randomly sampled from a Gaussian distribution. If you do this many times, and calculate a confidence interval of the mean from each sample, you'd expect about 95 % of those intervals to include the true value of the population mean. The key point is that the confidence interval tells you about the likely location of the true population parameter.
 # 
