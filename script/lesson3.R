@@ -25,9 +25,10 @@ d4 = read_tsv('https://raw.githubusercontent.com/petyaracz/class_advanced_r/main
 
 # -- fun -- #
 
+# take data, columns x, y, plot x against y, draw lm
 plotData = function(dat,x,y){
   dat %>% 
-    ggplot(aes({{x}},{{y}})) +
+    ggplot(aes({{x}},{{y}})) + # data masking: {{}} tells the function to look for the names x and y in dat
     geom_point() +
     geom_smooth(method = lm) +
     theme_bw()
@@ -37,16 +38,24 @@ plotData = function(dat,x,y){
 
 ## performance
 
+# always draw data first
 plotData(d0,height_father,height_son)
 
+# fit model
 lm0 = lm(height_son ~ height_father, data = d0)
 
+# coefficient estimates (from broom)
 lm0_coef = tidy(lm0, conf.int = T)
 lm0_coef
+# model stats (from broom)
 lm0_stats = glance(lm0)
 lm0_stats
+# model performance (from performance, overlaps with model stats)
 lm0_perf = model_performance(lm0)
 lm0_perf
+
+# check model (from performance)
+check_model(lm0)
 
 ## ppc
 
@@ -58,10 +67,12 @@ tidy(lm1, conf.int = T)
 glance(lm1)
 check_model(lm1)
 
+# let's add more information to the plot
 ggplot(d1, aes(height_father,height_son,colour = orig_father)) +
   geom_point() +
   theme_bw()
 
+# let's keep one type of dad
 d1ind = d1 %>% 
   filter(orig_father == 'ind')
 
@@ -88,6 +99,7 @@ tidy(lm3, conf.int = T)
 glance(lm3)
 check_model(lm3)
 
+# let's try polynomials
 lm3_square = lm(weight ~ poly(size, degree = 2), data = sizes)
 lm3_cube = lm(weight ~ poly(size, degree = 3), data = sizes)
 check_model(lm3_cube)
@@ -107,32 +119,47 @@ check_model(lm4)
 # mean absolute error
 # top/bottom x observation
 
+# create d4l, which is d4 with...
 d4l = d4 %>% 
-  mutate(
-    median_sqm = median(sqm),
-    mad_sqm = mad(sqm),
-    upper_sqm = mad_sqm + 2.5 * median_sqm,
-    lower_sqm = mad_sqm - 2.5 * median_sqm,
-    median_price = median(price),
+  mutate( # added columns
+    median_sqm = median(sqm), # median of sqm
+    mad_sqm = mad(sqm), # mean absolute deviation of sqm
+    upper_sqm = mad_sqm + 2.5 * median_sqm, # upper bound for observations is median + 2.5 mad
+    lower_sqm = mad_sqm - 2.5 * median_sqm, # lower bound is median - 2.5 mad
+    median_price = median(price), # same in english
     mad_price = mad(price),
     upper_price = mad_price + 2.5 * median_price,
     lower_price = mad_price - 2.5 * median_price,
     keep = sqm < upper_sqm & price < upper_price
   )
 
+# what did we exclude?
 d4l %>% 
   ggplot(aes(sqm,price,colour = keep)) +
   geom_point() +
   theme_bw()
 
+# only keep unruly observations
 d4r = d4l %>% 
   filter(keep)
 
+# try again
 lm4r = lm(price ~ sqm, data = d4r)
 
 tidy(lm4r, conf.int = T)
 glance(lm4r)
 check_model(lm4r)
 
-# minden egyszerre megy tonkre
-# golem
+# going back to lm0!
+check_model((lm0))
+# d0 was generated from two gaussian processes and still looks a tiny bit weird.
+
+# your turn!
+
+# d4
+
+# fit model: resp.rt ~ lfpm10r
+
+# get coefs and conf int
+# get stats
+# check model
