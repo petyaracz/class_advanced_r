@@ -4,8 +4,6 @@
 
 # -- head -- #
 
-setwd('~/Work/Adjunktus/HaladóRÓra/haladorrepo/')
-
 library(tidyverse)
 library(broom)
 

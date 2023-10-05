@@ -5,8 +5,6 @@
 
 # -- head -- #
 
-setwd('~/Work/Adjunktus/HaladóRÓra/haladorrepo')
-
 install.packages('broom')
 install.packages('performance')
 
@@ -21,7 +19,7 @@ d1 = read_tsv('https://raw.githubusercontent.com/petyaracz/class_advanced_r/main
 d2 = read_tsv('https://raw.githubusercontent.com/petyaracz/class_advanced_r/main/dat/l3d2.tsv')
 d3 = read_tsv('https://raw.githubusercontent.com/petyaracz/class_advanced_r/main/dat/l3d3.tsv')
 d4 = read_tsv('https://raw.githubusercontent.com/petyaracz/class_advanced_r/main/dat/l3d4.tsv')
-d4 = read_tsv('https://raw.githubusercontent.com/petyaracz/class_advanced_r/main/dat/l3d5.tsv')
+d5 = read_tsv('https://raw.githubusercontent.com/petyaracz/class_advanced_r/main/dat/l3d5.tsv')
 
 # -- fun -- #
 
@@ -101,9 +99,9 @@ check_model(lm3)
 
 # let's try polynomials
 lm3_square = lm(weight ~ poly(size, degree = 2), data = sizes)
-lm3_cube = lm(weight ~ poly(size, degree = 3), data = sizes)
+lm3_cube = lm(weight ~ poly(size, degree = 3), data = d3)
 check_model(lm3_cube)
-compare_performance(lm3,lm3_square,lm3_cube)
+compare_performance(lm3,lm3_cube)
 
 ## outliers
 
@@ -156,10 +154,27 @@ check_model((lm0))
 
 # your turn!
 
-# d4
-
+# d5
+d5
+plotData(d5, lfpm10r, resp.rt)
 # fit model: resp.rt ~ lfpm10r
-
+lm5 = lm(resp.rt ~ lfpm10r, data = d5)
+tidy(lm5)
+check_model(lm5)
 # get coefs and conf int
 # get stats
 # check model
+
+
+
+
+
+
+
+
+
+lm4 = lm(resp.rt ~ lfpm10r, data = d4)
+check_model(lm4)
+tidy(lm4)
+lm4l = lm(log(resp.rt) ~ lfpm10r, data = d4)
+check_model(lm4l)
