@@ -22,6 +22,10 @@ ps = seq(0,.99,.01)
 odds = ps / (1 - ps)
 log_odds = qlogis(ps)
 
+ps
+odds
+log_odds
+
 plot(ps,odds)
 plot(ps,log_odds)
 plot(log_odds,odds)
@@ -46,6 +50,7 @@ d %>%
 
 fit1 = glm(admitted ~ 1 + school, data = d, family = binomial(link = 'logit'))
 sum1 = tidy(fit1)
+sum1
 
 check_model(fit1) 
 
@@ -90,6 +95,20 @@ d2 %>%
   count(school,graduates) %>% 
   pivot_wider(names_from = graduates, values_from = n)
 
+fit2 = glm(graduates ~ 1 + school, data = d2, family = binomial(link = 'logit'))
+tidy(fit2)
+
+a2 = sum2 %>% 
+  filter(term == '(Intercept)') %>% 
+  pull(estimate)
+b2 = sum2 %>% 
+  filter(term == 'schoolTTK') %>% 
+  pull(estimate)
+
+plogis(a2)
+exp(a2)
+plogis(a2+b2)
+
 # not school
 
 d3 = read_tsv('https://raw.githubusercontent.com/petyaracz/class_advanced_r/main/dat/l4d1.tsv')
@@ -100,7 +119,7 @@ ggplot(d3, aes(lfpm10r,as.double(correct))) +
               method.args=list(family="binomial"))
 
 fit3 = glm(correct ~ lfpm10r, data = d3, family = binomial(link = 'logit'))
-tidy(fit3)
+tidy(fit3, conf.int = T)
 
 d4 = read_tsv('https://raw.githubusercontent.com/petyaracz/class_advanced_r/main/dat/l4d2.tsv')
 
