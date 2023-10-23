@@ -4,66 +4,71 @@ library(tidyverse)
 library(broom)
 library(performance)
 
+# -- read -- #
+
+d4 = read_tsv('https://raw.githubusercontent.com/petyaracz/class_advanced_r/main/dat/l5d4.tsv')
+d5 = read_tsv('https://raw.githubusercontent.com/petyaracz/class_advanced_r/main/dat/l5d5.tsv')
+housing = read_csv('https://raw.githubusercontent.com/petyaracz/class_advanced_r/main/dat/Housing.csv') 
+
 # -- main -- #
+
+# sjPlot
+
+install.packages('sjPlot')
+library(sjPlot)
 
 # 1. factor
 
-# read in dat/l5d1.tsv
-d1 = read_tsv('https://raw.githubusercontent.com/petyaracz/class_advanced_r/main/dat/l5d1.tsv')
+# factor + numeric
 
-# what is x? what is y?
-# plot y ~ x
-# fit a linear model
-# what is a (the intercept)? what is b? what are their confidence intervals?
-# is the model healthy?
+d4 %>% 
+  ggplot(aes(wage, edu, colour = gender)) +
+  geom_point() +
+  geom_smooth(method = lm) +
+  theme_bw()
 
-# 2. factor 2
+lm1 = lm(wage ~ edu, data = d4)
+lm2 = lm(wage ~ edu + gender, data = d4)
 
-# read in dat/l5d2.tsv
-# what is x? what is y?
-# plot y ~ x
-# fit a linear model
-# what is a (the intercept)? what is b? what are their confidence intervals?
+tidy(lm2, conf.int = T)
+compare_performance(lm1,lm2, metrics = 'common')
+anova(lm1,lm2)
 
-# factor levels:
-d2b = d2 %>% 
-  mutate(
-    nem2 = fct_relevel(nem, 'nő')
-  )
+plot_model(lm2, 'est')
+plot_model(lm2, 'pred')
+plot_model(lm2, 'pred', terms = 'edu')
+plot_model(lm2, 'pred', terms = c('edu','gender'))
 
-# 3. factor 3
+# factor * numeric
 
-# read in dat/l5d3.tsv
+# look at d5
 # what are x? what is y?
-# plot y ~ x
+# plot y ~ x1 + x2
 # fit a linear model
 # what is a (the intercept)? what are b? what are their confidence intervals?
 
-d3b = d3 %>% 
-  mutate(
-    high_school2 = fct_reorder(high_school, maths)
-  )
-d3c = d3 %>% 
-  mutate(
-    high_school3 = fct_reorder(high_school, -maths)
-  )
+lm3 = lm(wage ~ edu + gender, data = d5)
+lm4 = lm(wage ~ edu * gender, data = d5)
 
-# 4. factor + numeric
+tidy(lm4, conf.int = T)
+compare_performance(lm3,lm4, metrics = 'common')
+anova(lm3,lm4)
 
-# read in dat/l5d4.tsv
-# what are x? what is y?
-# plot y ~ x
-# fit a linear model
-# what is a (the intercept)? what are b? what are their confidence intervals?
+# HOUSING
 
-compare_performance(f1,f2,f3)
+summary(housing)
+glimpse(housing)
 
-# 5. factor * numeric
+lm5 = lm(price ~ area + bedrooms + bathrooms + guestroom + basement + hotwaterheating + airconditioning + parking + furnishingstatus, data = housing)
+lm6 = lm(price ~ bedrooms + bathrooms + guestroom + basement + hotwaterheating + airconditioning + parking + furnishingstatus, data = housing)
 
-# read in dat/l5d5.tsv
-# what are x? what is y?
-# plot y ~ x
-# fit a linear model
-# what is a (the intercept)? what are b? what are their confidence intervals?
+tidy(lm5, conf.int = T)
+check_model(lm5)
+plot_model(lm5, 'est')
+plot_model(lm5, 'pred', terms = c('area','furnishingstatus'))
+compare_performance(lm5,lm6, metrics = 'common')
 
-anova(f1,f2)
+# airconditioning
+# hotwaterheating
+# bathrooms
+# bedrooms
