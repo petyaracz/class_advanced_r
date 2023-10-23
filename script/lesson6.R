@@ -14,6 +14,7 @@ housing = read_csv('https://raw.githubusercontent.com/petyaracz/class_advanced_r
 
 # sjPlot
 
+install.packages('sandwich')
 install.packages('sjPlot')
 library(sjPlot)
 
@@ -32,7 +33,13 @@ lm2 = lm(wage ~ edu + gender, data = d4)
 
 tidy(lm2, conf.int = T)
 compare_performance(lm1,lm2, metrics = 'common')
-anova(lm1,lm2)
+plot(compare_performance(lm1,lm2, metrics = 'common'))
+test_performance(lm1,lm2)
+check_model(lm2)
+
+# The Test of Distinguishability (the Omega2 column and its associated p-value) indicates whether or not the models can possibly be distinguished on the basis of the observed data. If its p-value is significant, it means the models are distinguishable.
+
+# The Robust Likelihood Test (the LR column and its associated p-value) indicates whether each model fits better than the reference model. If the models are nested, then the test works as a robust LRT. The code for this function is adapted from the nonnest2 package, and all credit go to their authors.
 
 plot_model(lm2, 'est')
 plot_model(lm2, 'pred')
@@ -51,9 +58,10 @@ lm3 = lm(wage ~ edu + gender, data = d5)
 lm4 = lm(wage ~ edu * gender, data = d5)
 
 tidy(lm4, conf.int = T)
-compare_performance(lm3,lm4, metrics = 'common')
-anova(lm3,lm4)
+plot(compare_performance(lm3,lm4, metrics = 'common'))
+test_performance(lm3,lm4)
 
+# a real dataset!
 # HOUSING
 
 summary(housing)
@@ -66,9 +74,9 @@ tidy(lm5, conf.int = T)
 check_model(lm5)
 plot_model(lm5, 'est')
 plot_model(lm5, 'pred', terms = c('area','furnishingstatus'))
-compare_performance(lm5,lm6, metrics = 'common')
+plot(compare_performance(lm5,lm6, metrics = 'common'))
+test_performance(lm5,lm6)
 
-# airconditioning
-# hotwaterheating
-# bathrooms
-# bedrooms
+# area * hotwaterheating
+# area * bathrooms
+# area * airconditioning
