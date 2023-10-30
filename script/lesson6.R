@@ -58,8 +58,19 @@ lm3 = lm(wage ~ edu + gender, data = d5)
 lm4 = lm(wage ~ edu * gender, data = d5)
 
 tidy(lm4, conf.int = T)
+plot_model(lm4, 'est')
+plot_model(lm3, 'est')
+plot_model(lm4, 'pred', terms = c('edu', 'gender'))
+plot_model(lm3, 'pred', terms = c('edu', 'gender'))
+
 plot(compare_performance(lm3,lm4, metrics = 'common'))
 test_performance(lm3,lm4)
+
+d5 %>% 
+  ggplot(aes(x = edu, y = wage, colour = gender)) +
+  geom_point() +
+  geom_smooth(method = lm) +
+  theme_bw()
 
 # a real dataset!
 # HOUSING
@@ -71,6 +82,7 @@ lm5 = lm(price ~ area + bedrooms + bathrooms + guestroom + basement + hotwaterhe
 lm6 = lm(price ~ bedrooms + bathrooms + guestroom + basement + hotwaterheating + airconditioning + parking + furnishingstatus, data = housing)
 
 tidy(lm5, conf.int = T)
+
 check_model(lm5)
 plot_model(lm5, 'est')
 plot_model(lm5, 'pred', terms = c('area','furnishingstatus'))
@@ -78,5 +90,20 @@ plot(compare_performance(lm5,lm6, metrics = 'common'))
 test_performance(lm5,lm6)
 
 # area * hotwaterheating
+lm7 = lm(price ~ area * hotwaterheating, data = housing)
+lm8 = lm(price ~ area + hotwaterheating, data = housing)
+
+tidy(lm7, conf.int = T)
+plot(compare_performance(lm7,lm8, metrics = 'common'))
+test_performance(lm7,lm8)
+plot_model(lm8, 'pred', terms = c('area','hotwaterheating'))
 # area * bathrooms
 # area * airconditioning
+lm7 = lm(price ~ area * airconditioning, data = housing)
+lm8 = lm(price ~ area + airconditioning, data = housing)
+
+tidy(lm7, conf.int = T)
+plot(compare_performance(lm7,lm8, metrics = 'common'))
+test_performance(lm7,lm8)
+check_model(lm7)
+plot_model(lm7, 'pred', terms = c('area','airconditioning'))
