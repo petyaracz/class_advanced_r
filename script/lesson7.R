@@ -64,14 +64,22 @@ d %>%
 
 # test for:
 
-# apparent_temperature ~ temperature + wind speed
-# apparent_temperature ~ humidity + pressure
-# apparent_temperature ~ temperature + humidity
-# apparent_temperature ~ temperature + residual humidity :o
+# apparent_temperature ~ temperature + wind_speed / temperature * wind_speed
+# apparent_temperature ~ humidity + pressure / humidity * pressure
+# apparent_temperature ~ temperature + humidity / temperature * humidity
+# apparent_temperature ~ temperature + residual humidity
+# apparent_temperature ~ temperature + residual wind_speed
 
 # checklist:
-# 1. coefficient estimates (tidy, plot('est'))
-# 2. compare performance (plot)
-# 3. test performance
-# 4. check model
-
+# 1. coefficient estimates (tidy, plot_model('est'))
+tidy(model, conf.int = T)
+plot_model(model, 'est')
+# 2. visualise estimates
+plot_model(model, 'pred', terms = terms) # 'term [1,2,3]'
+# 3. compare performance (plot)
+plot(compare_performance(model1,model2))
+# 4. test performance
+test_wald(model1,model2)
+# 5. check model
+check_model(model)
+check_collinearity(model)
