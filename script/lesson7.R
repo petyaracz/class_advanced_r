@@ -65,21 +65,27 @@ d %>%
 # test for:
 
 # apparent_temperature ~ temperature + wind_speed / temperature * wind_speed
+lm1 = lm(apparent_temperature ~ temperature + wind_speed, data = d)
+lm2 = lm(apparent_temperature ~ temperature * wind_speed, data = d)
 # apparent_temperature ~ humidity + pressure / humidity * pressure
 # apparent_temperature ~ temperature + humidity / temperature * humidity
 # apparent_temperature ~ temperature + residual humidity
 # apparent_temperature ~ temperature + residual wind_speed
 
+lm1 = lm(apparent_temperature ~ humidity + pressure, data = d)
+lm2 = lm(apparent_temperature ~ humidity * pressure, data = d)
+
 # checklist:
 # 1. coefficient estimates (tidy, plot_model('est'))
-tidy(model, conf.int = T)
+tidy(lm1, conf.int = T)
+tidy(lm2, conf.int = T)
 plot_model(model, 'est')
 # 2. visualise estimates
-plot_model(model, 'pred', terms = terms) # 'term [1,2,3]'
+plot_model(lm2, 'pred', terms = c('humidity','pressure')) # 'term [1,2,3]'
 # 3. compare performance (plot)
-plot(compare_performance(model1,model2))
+plot(compare_performance(lm1,lm2))
 # 4. test performance
-test_wald(model1,model2)
+test_wald(lm1,lm2)
 # 5. check model
-check_model(model)
-check_collinearity(model)
+check_model(lm2)
+check_collinearity(lm2)
