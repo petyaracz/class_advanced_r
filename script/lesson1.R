@@ -31,6 +31,7 @@ d %>%
   geom_point() +
   theme_few() +
   geom_smooth(method = 'lm') +
+  geom_vline(xintercept = 0) +
   coord_cartesian(xlim = c(-50,50), ylim = c(-200,200))
 
 lm = lm(y ~ 1 + x, data = d)
