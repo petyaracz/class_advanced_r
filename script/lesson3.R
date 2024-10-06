@@ -7,6 +7,7 @@
 
 install.packages('broom')
 install.packages('performance')
+install.packages('see')
 
 library(tidyverse)
 library(broom) # !
@@ -51,9 +52,14 @@ lm0_stats
 # model performance (from performance, overlaps with model stats)
 lm0_perf = model_performance(lm0)
 lm0_perf
+model_performance(lm0, metrics = 'common')
 
 # check model (from performance)
 check_model(lm0)
+# return a list of single plots
+diagnostic_plots = plot(check_model(lm0, panel = FALSE))
+diagnostic_plots[[1]]
+diagnostic_plots[[5]]
 
 ## ppc
 
@@ -102,6 +108,8 @@ lm3_square = lm(weight ~ poly(size, degree = 2), data = sizes)
 lm3_cube = lm(weight ~ poly(size, degree = 3), data = d3)
 check_model(lm3_cube)
 compare_performance(lm3,lm3_cube)
+plot(compare_performance(lm3,lm3_cube))
+plot(compare_performance(lm3,lm3_cube), metrics = 'common')
 
 ## outliers
 
@@ -130,6 +138,9 @@ d4l = d4 %>%
     lower_price = mad_price - 2.5 * median_price,
     keep = sqm < upper_sqm & price < upper_price
   )
+
+# let's take a look:
+d4l
 
 # what did we exclude?
 d4l %>% 
