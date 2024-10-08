@@ -59,6 +59,9 @@ check_model(lm0)
 # return a list of single plots
 diagnostic_plots = plot(check_model(lm0, panel = FALSE))
 diagnostic_plots[[1]]
+diagnostic_plots[[2]]
+diagnostic_plots[[3]]
+diagnostic_plots[[4]]
 diagnostic_plots[[5]]
 
 ## ppc
