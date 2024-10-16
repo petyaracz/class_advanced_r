@@ -3,6 +3,7 @@
 library(tidyverse)
 library(broom)
 library(performance)
+library(sjPlot)
 
 # -- main -- #
 
@@ -56,7 +57,10 @@ d3c = d3 %>%
 # fit a linear model
 # what is a (the intercept)? what are b? what are their confidence intervals?
 
-compare_performance(f1,f2,f3)
+plot_model(m1, 'est')
+compare_performance(m1,m2,m3)
+compare_performance(m1,m2,m3, metrics = 'common')
+plot(compare_performance(m1,m2,m3, metrics = 'common'))
 
 # 5. factor * numeric
 
@@ -66,4 +70,7 @@ compare_performance(f1,f2,f3)
 # fit a linear model
 # what is a (the intercept)? what are b? what are their confidence intervals?
 
-anova(f1,f2)
+plot_model(m1, terms = c('pred1','pred2'))
+plot_model(m1, terms = c('pred2','pred1'))
+anova(m1,m2)
+test_performance(m1,m2)
