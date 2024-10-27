@@ -54,24 +54,6 @@ plot_model(lm2, 'pred', terms = c('edu','gender'))
 # fit a linear model
 # what is a (the intercept)? what are b? what are their confidence intervals?
 
-lm3 = lm(wage ~ edu + gender, data = d5)
-lm4 = lm(wage ~ edu * gender, data = d5)
-
-tidy(lm4, conf.int = T)
-plot_model(lm4, 'est')
-plot_model(lm3, 'est')
-plot_model(lm4, 'pred', terms = c('edu', 'gender'))
-plot_model(lm3, 'pred', terms = c('edu', 'gender'))
-
-plot(compare_performance(lm3,lm4, metrics = 'common'))
-test_performance(lm3,lm4)
-
-d5 %>% 
-  ggplot(aes(x = edu, y = wage, colour = gender)) +
-  geom_point() +
-  geom_smooth(method = lm) +
-  theme_bw()
-
 # a real dataset!
 # HOUSING
 
@@ -99,11 +81,3 @@ test_performance(lm7,lm8)
 plot_model(lm8, 'pred', terms = c('area','hotwaterheating'))
 # area * bathrooms
 # area * airconditioning
-lm7 = lm(price ~ area * airconditioning, data = housing)
-lm8 = lm(price ~ area + airconditioning, data = housing)
-
-tidy(lm7, conf.int = T)
-plot(compare_performance(lm7,lm8, metrics = 'common'))
-test_performance(lm7,lm8)
-check_model(lm7)
-plot_model(lm7, 'pred', terms = c('area','airconditioning'))
