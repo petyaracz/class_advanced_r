@@ -12,6 +12,10 @@ library(psych)
 
 d = read_tsv('https://raw.githubusercontent.com/petyaracz/class_advanced_r/main/dat/szeged.tsv')
 
+d |> 
+  ggplot(aes(ymd,apparent_temperature)) +
+  geom_point()
+
 # -- main -- #
 
 # we look at the data
