@@ -32,6 +32,13 @@ d |>
   ggplot(aes(scaled_word_familiarity,word_familiarity)) +
   geom_point()
 
+d |> 
+  ggplot(aes(scaled_word_familiarity,word_familiarity)) +
+  geom_point() +
+  facet_wrap( ~ participant)
+
+# participant vocab x word
+
 # -- vis -- #
 
 glimpse(d)
