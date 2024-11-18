@@ -30,3 +30,5 @@ plot_model(lm3, 'pred', terms = c('Age','Sex','Class'))
 # why? why not?
 # what is the best model that does meet the assumptions?
 # what does this model predict?
+
+d2
