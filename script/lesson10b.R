@@ -19,3 +19,4 @@ d2 = read_tsv('https://raw.githubusercontent.com/petyaracz/class_advanced_r/main
 
 # -- gods -- #
 
+glimpse(d1)
