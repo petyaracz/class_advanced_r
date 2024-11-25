@@ -26,8 +26,22 @@ glimpse(d1)
 ggplot() +
   geom_polygon(data = world, aes(x=long, y = lat, group = group), fill = "lightgrey") + 
   coord_fixed(1.3) +
-  geom_point(data = d1, aes(x = Long, y = Lat, colour = moral_gods)) +
-  scale_colour_viridis_c() +
+  geom_point(data = d1, aes(x = Long, y = Lat, colour = as.factor(moral_gods))) +
+  scale_colour_viridis_d() +
+  theme_bw()
+
+ggplot() +
+  geom_polygon(data = world, aes(x=long, y = lat, group = group), fill = "lightgrey") + 
+  coord_fixed(1.3) +
+  geom_point(data = d1, aes(x = Long, y = Lat, colour = as.factor(social_complexity))) +
+  scale_colour_viridis_d() +
+  theme_bw()
+
+ggplot() +
+  geom_polygon(data = world, aes(x=long, y = lat, group = group), fill = "lightgrey") + 
+  coord_fixed(1.3) +
+  geom_point(data = d1, aes(x = Long, y = Lat, colour = subsistence)) +
+  scale_colour_viridis_d() +
   theme_bw()
 
 d1 |> 
@@ -47,7 +61,6 @@ d1 |>
   ggplot(aes(as.factor(subsistence),fill = as.factor(moral_gods))) +
   geom_bar(position = position_dodge()) +
   coord_flip()
-
 
 d1 |> 
   ggplot(aes(as.factor(social_complexity),fill = as.factor(moral_gods))) +
