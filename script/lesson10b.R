@@ -68,6 +68,17 @@ d1 |>
   coord_flip() +
   facet_wrap( ~ region)
 
+d1 |> 
+  ggplot(aes(as.factor(social_complexity), fill = subsistence)) +
+  geom_bar(position = position_dodge()) +
+  coord_flip()
+
+
+d1 |> 
+  ggplot(aes(subsistence, fill = as.factor(social_complexity))) +
+  geom_bar(position = position_dodge()) +
+  coord_flip()
+
 ## models
 
 lm1 = lm(moral_gods ~ social_complexity + subsistence, data = d1)
@@ -78,11 +89,9 @@ lm5 = lmer(moral_gods ~ social_complexity + subsistence + (1 + social_complexity
 
 ## evaluation
 
-plot(compare_performance(lm1,lm2,lm3,lm4))
-
-tidy2(lm1)
+plot(compare_performance(lm1,lm2,lm3))
+anova(lm2,lm3)
 tidy2(lm2)
-tidy2(lm3)
 
 plot_model(lm1, 'pred', terms = 'social_complexity')
 plot_model(lm2, 'pred', terms = 'social_complexity')
